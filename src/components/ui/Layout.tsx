@@ -272,9 +272,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 onClick={() => { setProfileOpen(o => !o); setNotifOpen(false); }}
                 aria-label="Profile menu"
               >
-                <div className="app-topbar__avatar">TC</div>
+                <div className="app-topbar__avatar">{user?.name ? user.name[0].toUpperCase() : 'U'}</div>
                 <div className="app-topbar__profile-info">
-                  <span className="app-topbar__profile-name">TalentCorp</span>
+                  <span className="app-topbar__profile-name">{user?.name || 'User'}</span>
                   <span className="app-topbar__profile-plan">Pro plan</span>
                 </div>
                 <ChevronDown size={13} style={{ color: 'var(--text-tertiary)', transition: 'transform 150ms', transform: profileOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
@@ -284,7 +284,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="app-topbar__dropdown app-topbar__profile-panel">
                   <div className="app-topbar__dropdown-header">
                     <div className="app-topbar__profile-meta">
-                      <div className="app-topbar__avatar app-topbar__avatar--lg">TC</div>
+                      <div className="app-topbar__avatar app-topbar__avatar--lg">{user?.name ? user.name[0].toUpperCase() : 'U'}</div>
                       <div>
                         <span className="app-topbar__dropdown-title">{user?.name || 'TalentCorp'}</span>
                         <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--text-tertiary)', display: 'block' }}>{user?.email || 'admin@talentcorp.com'}</span>
