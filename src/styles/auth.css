@@ -1,0 +1,565 @@
+/* ============================================================
+   SoloBuildAI — Auth Page Styles
+   Isolated stylesheet for /signin and /signup.
+   No Tailwind. No dashboard styles bleed in.
+   ============================================================ */
+
+/* ── Auth-specific custom properties ── */
+:root {
+  --auth-blue:          #0066ff;
+  --auth-blue-hover:    #0052cc;
+  --auth-blue-dim:      rgba(0, 102, 255, 0.13);
+  --auth-blue-border:   rgba(0, 102, 255, 0.28);
+
+  --auth-bg-page:       #09090b;
+  /* Glass card — translucent dark grey, image visible through it */
+  --auth-card-bg:       rgba(30, 30, 34, 0.62);
+  --auth-card-border:   rgba(255, 255, 255, 0.12);
+  --auth-card-shadow:   0 32px 72px rgba(0, 0, 0, 0.55),
+                        0  4px 20px rgba(0, 0, 0, 0.35);
+
+  /* Inputs — slightly more opaque so typed text is crisp */
+  --auth-input-bg:      rgba(255, 255, 255, 0.07);
+  --auth-input-border:  rgba(255, 255, 255, 0.13);
+  --auth-input-focus:   #0066ff;
+
+  --auth-text-primary:   #f4f4f5;
+  --auth-text-secondary: #a1a1aa;
+  --auth-text-muted:     #71717a;
+  --auth-divider:        rgba(255, 255, 255, 0.10);
+
+  --auth-error-text:    #f87171;
+  --auth-error-bg:      rgba(239, 68, 68, 0.09);
+  --auth-error-border:  rgba(239, 68, 68, 0.22);
+}
+
+/* ── Page wrapper ───────────────────────────────────────────── */
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* ── Background image: covers the full viewport ── */
+  background-image: url('/auth-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* Fallback colour shown while the image loads */
+  background-color: #0d0d0f;
+
+  padding: 32px 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ── Dark translucent overlay sits between image and card ── */
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Uniform dark tint — keeps image recognisable but subdued */
+  background: rgba(8, 8, 10, 0.58);
+  pointer-events: none;
+}
+
+/* ── Background image layer — no longer used; kept for safety ── */
+.auth-background {
+  display: none;
+}
+
+.auth-background__img {
+  display: none;
+}
+
+.auth-background__overlay {
+  display: none;
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.auth-card {
+  position: relative;
+  /* Must be above the ::before overlay (z-index 0) */
+  z-index: 1;
+  width: 100%;
+  background: var(--auth-card-bg);
+  border: 1px solid var(--auth-card-border);
+  border-radius: 16px;
+  box-shadow: var(--auth-card-shadow);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  padding: 40px 36px;
+  box-sizing: border-box;
+}
+
+/* Sign-in card — compact */
+.auth-card--signin {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Sign-up card — wider */
+.auth-card--signup {
+  max-width: 800px;
+  margin: 0 auto;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+
+.auth-card--signup::-webkit-scrollbar {
+  width: 4px;
+}
+.auth-card--signup::-webkit-scrollbar-track {
+  background: transparent;
+}
+.auth-card--signup::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 99px;
+}
+
+/* ── Logo ────────────────────────────────────────────────────── */
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo img {
+  display: block;
+  height: 52px;
+  width: auto;
+  max-width: 260px;
+  object-fit: contain;
+}
+
+/* SVG logo rendered inline gets the same sizing */
+.auth-logo svg {
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
+/* ── Title & subtitle ────────────────────────────────────────── */
+.auth-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--auth-text-primary);
+  text-align: center;
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
+}
+
+/* Sign-up title is left-aligned per the reference screenshot */
+.auth-card--signup .auth-title {
+  text-align: left;
+  font-size: 22px;
+}
+
+.auth-subtitle {
+  font-size: 13px;
+  color: var(--auth-text-secondary);
+  text-align: center;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.auth-card--signup .auth-subtitle {
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.auth-subtitle a {
+  color: var(--auth-blue);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 120ms;
+}
+.auth-subtitle a:hover {
+  color: #3385ff;
+}
+
+/* ── Social OAuth row ────────────────────────────────────────── */
+.auth-social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.auth-social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--auth-input-bg);
+  border: 1px solid var(--auth-input-border);
+  border-radius: 8px;
+  padding: 9px 16px;
+  color: #d4d4d8;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 140ms, background 140ms;
+}
+.auth-social-button:hover {
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.06);
+}
+
+.auth-social-button svg {
+  flex-shrink: 0;
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 20px;
+}
+
+.auth-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--auth-divider);
+}
+
+.auth-divider__text {
+  font-size: 12px;
+  color: var(--auth-text-muted);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Form ────────────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ── Field ───────────────────────────────────────────────────── */
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--auth-text-secondary);
+  letter-spacing: 0.01em;
+}
+
+/* ── Input ───────────────────────────────────────────────────── */
+.auth-input {
+  display: block;
+  width: 100%;
+  background: var(--auth-input-bg);
+  border: 1px solid var(--auth-input-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--auth-text-primary);
+  outline: none;
+  transition: border-color 140ms, box-shadow 140ms;
+  box-sizing: border-box;
+}
+
+.auth-input::placeholder {
+  color: var(--auth-text-muted);
+}
+
+.auth-input:focus {
+  border-color: var(--auth-input-focus);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.14);
+}
+
+.auth-input--select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2371717a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+/* ── Row: remember me + forgot ──────────────────────────────── */
+.auth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-remember input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--auth-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+
+.auth-remember span {
+  font-size: 13px;
+  color: var(--auth-text-secondary);
+}
+
+.auth-forgot {
+  font-size: 13px;
+  color: var(--auth-blue);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 120ms;
+}
+.auth-forgot:hover {
+  color: #3385ff;
+}
+
+/* ── Primary button ──────────────────────────────────────────── */
+.auth-primary-button {
+  width: 100%;
+  background: var(--auth-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 140ms, box-shadow 140ms;
+  box-shadow: 0 2px 12px rgba(0, 102, 255, 0.28);
+}
+.auth-primary-button:hover {
+  background: var(--auth-blue-hover);
+  box-shadow: 0 4px 20px rgba(0, 102, 255, 0.38);
+}
+.auth-primary-button:active {
+  background: #0047b3;
+}
+.auth-primary-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* ── Error message ───────────────────────────────────────────── */
+.auth-error {
+  font-size: 12px;
+  color: var(--auth-error-text);
+  background: var(--auth-error-bg);
+  border: 1px solid var(--auth-error-border);
+  border-radius: 7px;
+  padding: 8px 12px;
+  margin: 0;
+}
+
+/* ── Demo credentials badge ──────────────────────────────────── */
+.auth-demo-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--auth-blue-dim);
+  border: 1px solid var(--auth-blue-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 4px;
+}
+
+.auth-demo-badge__icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+
+.auth-demo-badge__text {
+  font-size: 12px;
+  color: var(--auth-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.auth-demo-badge__label {
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+.auth-demo-badge__value {
+  color: #d4d4d8;
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Mono', monospace;
+}
+
+/* ── Section heading (Sign Up) ───────────────────────────────── */
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-section__heading {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--auth-text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--auth-divider);
+}
+
+/* ── Checkbox tiles (AI requirements) ───────────────────────── */
+.auth-checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.auth-checkbox-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--auth-input-bg);
+  border: 1px solid var(--auth-input-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 140ms, background 140ms;
+}
+
+.auth-checkbox-tile:hover {
+  border-color: rgba(255,255,255,0.18);
+}
+
+.auth-checkbox-tile--checked {
+  border-color: rgba(0, 102, 255, 0.55);
+  background: rgba(0, 102, 255, 0.08);
+}
+
+.auth-checkbox-tile input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--auth-blue);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.auth-checkbox-tile span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--auth-text-secondary);
+  transition: color 140ms;
+}
+
+.auth-checkbox-tile--checked span {
+  color: var(--auth-text-primary);
+}
+
+/* ── Custom solution alert ───────────────────────────────────── */
+.auth-custom-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(0, 102, 255, 0.08);
+  border: 1px solid rgba(0, 102, 255, 0.25);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 4px;
+}
+
+.auth-custom-alert svg {
+  flex-shrink: 0;
+  color: var(--auth-blue);
+  margin-top: 1px;
+}
+
+.auth-custom-alert p {
+  font-size: 13px;
+  color: #93c5fd;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.auth-custom-alert strong {
+  color: #ffffff;
+}
+
+/* ── Footer link ─────────────────────────────────────────────── */
+.auth-footer {
+  font-size: 13px;
+  color: var(--auth-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.auth-footer a {
+  color: var(--auth-blue);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 120ms;
+}
+.auth-footer a:hover {
+  color: #3385ff;
+}
+
+/* ── Spacer between card sections ───────────────────────────── */
+.auth-section-gap {
+  height: 8px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .auth-card {
+    border-radius: 12px;
+    padding: 28px 20px;
+  }
+
+  .auth-card--signup {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .auth-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-social-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .auth-title {
+    font-size: 18px;
+  }
+}
