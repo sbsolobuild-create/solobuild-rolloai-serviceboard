@@ -4,7 +4,8 @@ import { Layout } from './components/ui/Layout';
 import { ToastProvider } from './components/ui/Toast';
 import { AppProvider } from './store/appStore';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import AuthPage from './pages/AuthPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 // ——— Route guard: redirects to /login if not authenticated ———
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -75,12 +76,10 @@ import ConversionAnalytics from './pages/sales/analytics/ConversionAnalytics';
 import RevenueInsights from './pages/sales/analytics/RevenueInsights';
 import Forecasting from './pages/sales/analytics/Forecasting';
 import ActivityAnalytics from './pages/sales/analytics/Activity';
-import EmployeeOnboarding from './pages/hr/EmployeeOnboarding';
-import LearningDevelopment from './pages/hr/LearningDevelopment';
-
 // Styles
 import './styles/global.css';
 import './styles/sales-qualification.css';
+import './styles/auth.css';
 
 const App: React.FC = () => {
   return (
@@ -90,7 +89,8 @@ const App: React.FC = () => {
           <ToastProvider>
             <Routes>
               {/* Public route */}
-              <Route path="/login" element={<AuthPage />} />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
 
               {/* All HR / product routes — require authentication */}
               <Route
